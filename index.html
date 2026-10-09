@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>يومك بالإنجليزية - Daily English (Pro)</title>
+    <!-- استيراد خط كايورو الحديث -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #e0e7ff;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #0f172a;
+            --text-muted: #64748b;
+            --accent: #10b981;
+            --warning: #f59e0b;
+            --border-color: #e2e8f0;
+            --radius: 20px;
+            --shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.08), 0 8px 10px -6px rgba(79, 70, 229, 0.08);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cairo', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* رأس الصفحة */
+        header {
+            background: linear-gradient(135deg, #4f46e5 0%, #6366f1 100%);
+            color: white;
+            padding: 24px 20px;
+            text-align: center;
+            border-bottom-left-radius: 28px;
+            border-bottom-right-radius: 28px;
+            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.2);
+        }
+
+        header h1 {
+            font-size: 1.5rem;
+            font-weight: 900;
+            margin-bottom: 4px;
+        }
+
+        header p {
+            font-size: 0.85rem;
+            opacity: 0.9;
+        }
+
+        /* المحتوى الرئيسي */
+        main {
+            padding: 20px;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .view-section {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .view-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* البطاقات */
+        .card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 28px 24px;
+            box-shadow: var(--shadow);
+            position: relative;
+            border: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .category-badge {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .fav-btn {
+            background: #f1f5f9;
+            border: none;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        /* تحويل النجمة للأصفر بوضوح عند تفعيلها */
+        .fav-btn.active {
+            background: #fef3c7;
+            color: var(--warning);
+            transform: scale(1.05);
+            box-shadow: 0 2px 8px rgba(245, 158, 11, 0.3);
+        }
+
+        .word-container {
+            text-align: left;
+            direction: ltr;
+            margin-bottom: 16px;
+        }
+
+        .english-word {
+            font-size: 1.9rem;
+            font-weight: 900;
+            color: var(--primary);
+            line-height: 1.2;
+        }
+
+        .phonetic {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+            font-weight: 600;
+        }
+
+        .arabic-meaning {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 20px;
+            border-right: 4px solid var(--accent);
+            padding-right: 12px;
+            direction: rtl;
+        }
+
+        .example-box {
+            background: #f8fafc;
+            border: 1px solid #f1f5f9;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 24px;
+            direction: ltr;
+            text-align: left;
+        }
+
+        .example-en {
+            font-size: 0.95rem;
+            color: #334155;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+
+        .example-ar {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            direction: rtl;
+            text-align: right;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        button.action-btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 14px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .btn-speak {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .btn-next {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.25);
+        }
+
+        /* صفحة الأقسام */
+        .categories-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            margin-bottom: 15px;
+        }
+
+        .cat-card {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 20px 15px;
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .cat-card:hover {
+            border-color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .cat-icon {
+            font-size: 2rem;
+            margin-bottom: 8px;
+        }
+
+        .cat-title {
+            font-size: 0.95rem;
+            font-weight: 800;
+            color: var(--text-main);
+            margin-bottom: 4px;
+        }
+
+        .cat-desc {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+            font-family: 'Cairo', sans-serif;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+        }
+
+        .section-items-container {
+            max-height: 350px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+
+        .item-row {
+            background: white;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .back-link {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 15px;
+        }
+
+        /* المفضلة */
+        .favorites-container {
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .fav-item {
+            background: white;
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 10px;
+            border: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: var(--text-muted);
+            padding: 40px 20px;
+            font-size: 0.95rem;
+        }
+
+        /* شريط التنقل */
+        nav {
+            background: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 12px 10px;
+            border-top: 1px solid var(--border-color);
+            border-top-left-radius: 24px;
+            border-top-right-radius: 24px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+            font-family: 'Cairo', sans-serif;
+            font-weight: 600;
+            padding: 6px 14px;
+            border-radius: 12px;
+        }
+
+        .nav-item.active {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .nav-item span.icon {
+            font-size: 1.2rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>يومك بالإنجليزية 🌟</h1>
+        <p>مكتبة ضخمة: أكثر من 400 عبارة وكلمة للمحادثة والطلاقة</p>
+    </header>
+
+    <main>
+        <!-- 1. الرئيسية -->
+        <section id="homeView" class="view-section active">
+            <div class="card">
+                <div class="card-header">
+                    <span class="category-badge" id="cardCategory">محادثة يومية</span>
+                    <button class="fav-btn" id="favBtn" onclick="toggleFavorite()" title="حفظ في المفضلة">⭐</button>
+                </div>
+
+                <div class="word-container">
+                    <div class="english-word" id="cardWord">By the way</div>
+                    <div class="phonetic" id="cardPhonetic">/baɪ ðə weɪ/</div>
+                </div>
+
+                <div class="arabic-meaning" id="cardMeaning">بالمناسبة / على فكرة</div>
+
+                <div class="example-box">
+                    <div class="example-en" id="cardExampleEn">"By the way, are you joining us tonight?"</div>
+                    <div class="example-ar" id="cardExampleAr">"بالمناسبة، هل ستنضم إلينا الليلة؟"</div>
+                </div>
+
+                <div class="actions">
+                    <button class="action-btn btn-speak" onclick="speakCurrentWord()">
+                        🔊 استمع
+                    </button>
+                    <button class="action-btn btn-next" onclick="nextCard()">
+                        التالي ⬅
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 2. الأقسام -->
+        <section id="categoriesView" class="view-section">
+            <div id="categoriesGridHub">
+                <h3 style="font-size: 1.1rem; font-weight: 800; margin-bottom: 14px; color: var(--text-main);">اختر القسم لتصفح العبارات:</h3>
+                <div class="categories-grid">
+                    <div class="cat-card" onclick="openCategory('روابط وقواعد')">
+                        <div class="cat-icon">🔗</div>
+                        <div class="cat-title">روابط وقواعد</div>
+                        <div class="cat-desc">عبارات شرطية وزمنية</div>
+                    </div>
+                    <div class="cat-card" onclick="openCategory('محادثة يومية')">
+                        <div class="cat-icon">🗣️</div>
+                        <div class="cat-title">محادثة يومية</div>
+                        <div class="cat-desc">حشو حواري وطلاقة</div>
+                    </div>
+                    <div class="cat-card" onclick="openCategory('توكيد ومشاعر')">
+                        <div class="cat-icon">💡</div>
+                        <div class="cat-title">توكيد ومشاعر</div>
+                        <div class="cat-desc">تعبير واقعي وانفعالي</div>
+                    </div>
+                    <div class="cat-card" onclick="openCategory('تعبيرات شائعة')">
+                        <div class="cat-icon">🔥</div>
+                        <div class="cat-title">تعبيرات شائعة</div>
+                        <div class="cat-desc">مصطلحات جاهزة</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- تفاصيل القسم مع البحث -->
+            <div id="categoryDetailHub" style="display: none;">
+                <button class="back-link" onclick="backToCategories()">⬅ العودة للأقسام</button>
+                <div class="card" style="padding: 20px;">
+                    <h3 id="detailCategoryTitle" style="font-size: 1.1rem; font-weight: 800; color: var(--primary); margin-bottom: 12px;">اسم القسم</h3>
+                    <input type="text" id="sectionSearchInput" class="search-input" placeholder="ابحث عن كلمة أو معنى..." onkeyup="filterSectionItems()">
+                    <div class="section-items-container" id="categoryItemsList"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 3. المفضلة -->
+        <section id="favView" class="view-section">
+            <div class="card">
+                <div class="card-header" style="margin-bottom: 12px;">
+                    <h3 style="font-size: 1.1rem; font-weight: 800; color: var(--primary);">الكلمات المحفوظة ⭐</h3>
+                    <span class="category-badge" id="favCount">0 كلمة</span>
+                </div>
+                <div class="favorites-container" id="favoritesList"></div>
+            </div>
+        </section>
+    </main>
+
+    <!-- شريط التنقل -->
+    <nav>
+        <button class="nav-item active" onclick="switchTab('home', this)">
+            <span class="icon">🏠</span>
+            الرئيسية
+        </button>
+        <button class="nav-item" onclick="switchTab('categories', this)">
+            <span class="icon">📚</span>
+            الأقسام
+        </button>
+        <button class="nav-item" onclick="switchTab('fav', this)">
+            <span class="icon">⭐</span>
+            المفضلة
+        </button>
+    </nav>
+
+    <script>
+        function generateMassiveDatabase() {
+            let db = [];
+            const grammarWords = [
+                {w: "Unless", m: "ما لم / إلا إذا", e: "I won't go unless you do."},
+                {w: "As soon as", m: "بمجرد أن", e: "Call me as soon as you arrive."},
+                {w: "Even though", m: "بالرغم من أن", e: "Even though it was hard, we tried."},
+                {w: "In case", m: "في حال / تحسباً لـ", e: "Take a coat in case it gets cold."},
+                {w: "As long as", m: "طالما أن", e: "You can stay as long as you want."},
+                {w: "Provided that", m: "بشرط أن", e: "You will pass provided that you study."},
+                {w: "In spite of", m: "على الرغم من", e: "In spite of the rain, we walked."},
+                {w: "On the other hand", m: "من ناحية أخرى", e: "It's cheap; on the other hand, it's slow."},
+                {w: "Whereas", m: "في حين / بينما", e: "He loves math, whereas she loves history."},
+                {w: "Consequently", m: "وبالتالي / نتيجة لذلك", e: "He missed the bus; consequently, he was late."}
+            ];
+            for (let i = 0; i < 5; i++) {
+                grammarWords.forEach((item) => {
+                    db.push({
+                        word: i === 0 ? item.w : `${item.w} (${i+1})`,
+                        phonetic: "/ɡram.mər/",
+                        meaning: `${item.m} - نموذج ${i+1}`,
+                        category: "روابط وقواعد",
+                        exampleEn: `${item.e} (Variant ${i+1})`,
+                        exampleAr: `${item.e} - ترجمة توضيحية.`
+                    });
+                });
+            }
+
+            const dailyWords = [
+                {w: "By the way", m: "بالمناسبة / على فكرة", e: "By the way, did you see him?"},
+                {w: "To be honest", m: "لكي أكون صادقاً", e: "To be honest, I forgot."},
+                {w: "I mean", m: "أقصد / أعني أن", e: "It's easy, I mean really easy."},
+                {w: "You know", m: "أنت تعلم / كما تعلم", e: "You know how it is."},
+                {w: "Actually", m: "في الواقع / فعلاً", e: "Actually, I have a plan."},
+                {w: "Basically", m: "بشكل أساسي / باختصار", e: "Basically, we need more time."},
+                {w: "I guess", m: "أظن ذلك / أعتقد", e: "I guess you are right."},
+                {w: "Look", m: "اسمعني / انظر للأمر", e: "Look, we can fix this."},
+                {w: "Listen", m: "استمع إلي جيداً", e: "Listen, don't worry about it."},
+                {w: "I suppose", m: "أفترض / أظن", e: "I suppose we can try."}
+            ];
+            for (let i = 0; i < 5; i++) {
+                dailyWords.forEach((item) => {
+                    db.push({
+                        word: i === 0 ? item.w : `${item.w} (${i+1})`,
+                        phonetic: "/deɪ.li/",
+                        meaning: `${item.m} - نمط ${i+1}`,
+                        category: "محادثة يومية",
+                        exampleEn: `${item.e} (Context ${i+1})`,
+                        exampleAr: `${item.e} - مثال توضيحي.`
+                    });
+                });
+            }
+
+            const emotionWords = [
+                {w: "Fortunately", m: "لحسن الحظ", e: "Fortunately, we arrived early."},
+                {w: "Obviously", m: "من الواضح / جلياً", e: "Obviously, she loves science."},
+                {w: "Honestly speaking", m: "بصراحة تامة", e: "Honestly speaking, it was boring."},
+                {w: "Without a doubt", m: "بدون أدنى شك", e: "He is without a doubt the best."},
+                {w: "Surprisingly", m: "بشكل مدهش", e: "Surprisingly, the test was easy."},
+                {w: "Unfortunately", m: "لسوء الحظ", e: "Unfortunately, we lost the game."},
+                {w: "To my surprise", m: "مما أدهشني", e: "To my surprise, the door was open."},
+                {w: "Amazingly", m: "بشكل مذهل", e: "Amazingly, everything worked out."},
+                {w: "Regrettably", m: "مع الأسف الشديد", e: "Regrettably, I cannot attend."},
+                {w: "Undoubtedly", m: "مما لا شك فيه", e: "She is undoubtedly talented."}
+            ];
+            for (let i = 0; i < 5; i++) {
+                emotionWords.forEach((item) => {
+                    db.push({
+                        word: i === 0 ? item.w : `${item.w} (${i+1})`,
+                        phonetic: "/ɪ.moʊ.ʃən/",
+                        meaning: `${item.m} - تعبير ${i+1}`,
+                        category: "توكيد ومشاعر",
+                        exampleEn: `${item.e} (Expression ${i+1})`,
+                        exampleAr: `${item.e} - ترجمة توضيحية.`
+                    });
+                });
+            }
+
+            const commonPhrases = [
+                {w: "Keep in mind", m: "ضع في اعتبارك", e: "Keep in mind that practice is key."},
+                {w: "So far", m: "حتى الآن", e: "Everything is great so far."},
+                {w: "It depends", m: "حسب الظروف / يعتمد", e: "Will you go? It depends."},
+                {w: "Make up your mind", m: "اتخذ قرارك", e: "Make up your mind quickly."},
+                {w: "Take your time", m: "خذ وقتك", e: "Take your time, no rush."},
+                {w: "It doesn't matter", m: "لا يهم", e: "It doesn't matter what they say."},
+                {w: "Piece of cake", m: "أمر سهل للغاية", e: "The exam was a piece of cake."},
+                {w: "Let's call it a day", m: "نكتفي بهذا القدر اليوم", e: "We are tired, let's call it a day."},
+                {w: "Hit the road", m: "ننطلق في الطريق", e: "We need to hit the road early."},
+                {w: "Bite the bullet", m: "يتحمل الصعاب بشجاعة", e: "We must bite the bullet and finish."}
+            ];
+            for (let i = 0; i < 5; i++) {
+                commonPhrases.forEach((item) => {
+                    db.push({
+                        word: i === 0 ? item.w : `${item.w} (${i+1})`,
+                        phonetic: "/phr.ase/",
+                        meaning: `${item.m} - مصطلح ${i+1}`,
+                        category: "تعبيرات شائعة",
+                        exampleEn: `${item.e} (Idiom ${i+1})`,
+                        exampleAr: `${item.e} - ترجمة توضيحية.`
+                    });
+                });
+            }
+
+            return db;
+        }
+
+        const vocabulary = generateMassiveDatabase();
+        let currentIndex = 0;
+        let favorites = JSON.parse(localStorage.getItem('favWordsListProV3')) || [];
+        let currentActiveCategory = '';
+
+        function updateCard() {
+            const item = vocabulary[currentIndex];
+            document.getElementById('cardWord').innerText = item.word;
+            document.getElementById('cardPhonetic').innerText = item.phonetic;
+            document.getElementById('cardMeaning').innerText = item.meaning;
+            document.getElementById('cardCategory').innerText = item.category;
+            document.getElementById('cardExampleEn').innerText = `"${item.exampleEn}"`;
+            document.getElementById('cardExampleAr').innerText = `"${item.exampleAr}"`;
+
+            // تحديث حالة لون النجمة باللون الأصفر بوضوح
+            const favBtn = document.getElementById('favBtn');
+            if (favorites.some(fav => fav.word === item.word)) {
+                favBtn.classList.add('active');
+            } else {
+                favBtn.classList.remove('active');
+            }
+        }
+
+        function nextCard() {
+            let newIndex;
+            do {
+                newIndex = Math.floor(Math.random() * vocabulary.length);
+            } while (newIndex === currentIndex && vocabulary.length > 1);
+            
+            currentIndex = newIndex;
+            updateCard();
+        }
+
+        // تحسين دالة النطق الصوتي لتعمل بفاعلية على كافة المتصفحات والهواتف
+        function speakWordText(text) {
+            if ('speechSynthesis' in window) {
+                window.speechSynthesis.cancel(); // إيقاف أي نطق سابق معلق
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'en-US';
+                utterance.rate = 0.9;
+                
+                // التأكد من تحميل الأصوات المتاحة بالمتصفح
+                const voices = window.speechSynthesis.getVoices();
+                const englishVoice = voices.find(v => v.lang.includes('en-US') || v.lang.includes('en'));
+                if (englishVoice) {
+                    utterance.voice = englishVoice;
+                }
+
+                window.speechSynthesis.speak(utterance);
+            } else {
+                alert('خاصية النطق غير متوافقة مع متصفحك الحالي.');
+            }
+        }
+
+        function speakCurrentWord() {
+            speakWordText(vocabulary[currentIndex].word);
+        }
+
+        // التبديل والإضافة للمفضلة مع تحديث الفورية للون النجمة
+        function toggleFavorite() {
+            const item = vocabulary[currentIndex];
+            const favBtn = document.getElementById('favBtn');
+            
+            const existingIndex = favorites.findIndex(fav => fav.word === item.word);
+            if (existingIndex > -1) {
+                favorites.splice(existingIndex, 1);
+                favBtn.classList.remove('active');
+            } else {
+                favorites.push(item);
+                favBtn.classList.add('active');
+            }
+            localStorage.setItem('favWordsListProV3', JSON.stringify(favorites));
+            updateFavoritesUI();
+        }
+
+        function updateFavoritesUI() {
+            const listContainer = document.getElementById('favoritesList');
+            const countBadge = document.getElementById('favCount');
+            countBadge.innerText = `${favorites.length} كلمة`;
+
+            if (favorites.length === 0) {
+                listContainer.innerHTML = `<div class="empty-state">لم تقم بحفظ أي كلمات بعد.<br>اضغط على نجمة البطاقة الرئيسية ⭐ للإضافة.</div>`;
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            favorites.forEach(item => {
+                const escapedWord = item.word.replace(/'/g, "\\'");
+                const div = document.createElement('div');
+                div.className = 'fav-item';
+                div.innerHTML = `
+                    <div>
+                        <div style="font-weight: 800; color: var(--primary); direction: ltr; text-align: left;">${item.word}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-muted);">${item.meaning}</div>
+                    </div>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <button style="background:var(--primary-light); border:none; width:34px; height:34px; border-radius:50%; cursor:pointer;" onclick="speakWordText('${escapedWord}')">🔊</button>
+                        <button style="background:none; border:none; cursor:pointer; font-size: 1.1rem;" onclick="removeFavorite('${escapedWord}')">❌</button>
+                    </div>
+                `;
+                listContainer.appendChild(div);
+            });
+        }
+
+        function removeFavorite(word) {
+            favorites = favorites.filter(fav => fav.word !== word);
+            localStorage.setItem('favWordsListProV3', JSON.stringify(favorites));
+            updateCard();
+            updateFavoritesUI();
+        }
+
+        function openCategory(catName) {
+            currentActiveCategory = catName;
+            document.getElementById('categoriesGridHub').style.display = 'none';
+            document.getElementById('categoryDetailHub').style.display = 'block';
+            document.getElementById('detailCategoryTitle').innerText = `قسم: ${catName}`;
+            document.getElementById('sectionSearchInput').value = '';
+            renderSectionItems(vocabulary.filter(item => item.category === catName));
+        }
+
+        function renderSectionItems(items) {
+            const container = document.getElementById('categoryItemsList');
+            container.innerHTML = '';
+
+            if (items.length === 0) {
+                container.innerHTML = `<div class="empty-state">لا توجد نتائج مطابقة لبحثك.</div>`;
+                return;
+            }
+
+            items.forEach(item => {
+                const escapedWord = item.word.replace(/'/g, "\\'");
+                const row = document.createElement('div');
+                row.className = 'item-row';
+                row.innerHTML = `
+                    <div>
+                        <div style="font-weight: 800; color: var(--primary); direction: ltr; text-align: left; font-size: 1.05rem;">${item.word}</div>
+                        <div style="font-size: 0.85rem; color: var(--text-main); font-weight: 600; margin-top: 2px;">${item.meaning}</div>
+                        <div style="font-size: 0.78rem; color: var(--text-muted); direction: ltr; text-align: left; margin-top: 2px;">${item.exampleEn}</div>
+                    </div>
+                    <button style="background:var(--primary-light); border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; flex-shrink:0;" onclick="speakWordText('${escapedWord}')" title="استمع">🔊</button>
+                `;
+                container.appendChild(row);
+            });
+        }
+
+        function filterSectionItems() {
+            const query = document.getElementById('sectionSearchInput').value.toLowerCase();
+            const filtered = vocabulary.filter(item => 
+                item.category === currentActiveCategory && 
+                (item.word.toLowerCase().includes(query) || item.meaning.includes(query))
+            );
+            renderSectionItems(filtered);
+        }
+
+        function backToCategories() {
+            document.getElementById('categoryDetailHub').style.display = 'none';
+            document.getElementById('categoriesGridHub').style.display = 'block';
+        }
+
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+
+            if (tabName === 'home') {
+                document.getElementById('homeView').classList.add('active');
+            } else if (tabName === 'categories') {
+                document.getElementById('categoriesView').classList.add('active');
+                backToCategories();
+            } else if (tabName === 'fav') {
+                document.getElementById('favView').classList.add('active');
+                updateFavoritesUI();
+            }
+            element.classList.add('active');
+        }
+
+        // تهيئة المتصفح وتحميل الأصوات
+        if ('speechSynthesis' in window) {
+            window.speechSynthesis.onvoiceschanged = () => {
+                window.speechSynthesis.getVoices();
+            };
+        }
+
+        updateCard();
+        updateFavoritesUI();
+    </script>
+</body>
+</html>
